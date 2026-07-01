@@ -1,8 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
+import { FaTrash, FaMinus, FaPlus } from "react-icons/fa";
+import { removeFromCart, addToCart ,decreaseQuantity,} from "../features/cartSlice";
 
 function Card() {
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const navigate = useNavigate();
 
@@ -17,85 +20,119 @@ function Card() {
   );
 
   const discount = totalMRP - total;
-  const delivery = total > 0 ? 0 : 0;
-  const finalAmount = total + delivery;
+  const finalAmount = total;
 
   return (
     <div style={styles.page}>
-      <h1 style={styles.title}>Shopping Bag</h1>
+      <div style={styles.container}>
+        <h1 style={styles.title}>Shopping Bag</h1>
 
-      {cartItems.length === 0 ? (
-        <div style={styles.emptyBox}>
-          <h2>Your bag is empty</h2>
-          <p>Add items that you like to your bag.</p>
-          <Link to="/products" style={styles.shopBtn}>
-            Continue Shopping
-          </Link>
-        </div>
-      ) : (
-        <div style={styles.wrapper}>
-          <div style={styles.left}>
-            <div style={styles.offerBox}>
-              <strong>Available Offers</strong>
-              <p>10% instant discount on selected products.</p>
-            </div>
-
-            {cartItems.map((item) => (
-              <div key={item.id} style={styles.card}>
-                <img src={item.image} alt={item.name} style={styles.image} />
-
-                <div style={styles.info}>
-                  <h3 style={styles.name}>{item.name}</h3>
-                  <p style={styles.category}>{item.category}</p>
-
-                  <div style={styles.priceRow}>
-                    <span style={styles.price}>₹{item.price}</span>
-                    <span style={styles.oldPrice}>₹{item.oldPrice}</span>
-                    <span style={styles.discount}>OFF</span>
-                  </div>
-
-                  <p style={styles.qty}>Qty: {item.quantity}</p>
-
-                  <p style={styles.delivery}>Delivery by 3-5 days</p>
-                </div>
+        {cartItems.length === 0 ? (
+          <div style={styles.emptyBox}>
+            <h2>Your bag is empty</h2>
+            <p>Add items that you like to your bag.</p>
+            <Link to="/products" style={styles.shopBtn}>
+              Continue Shopping
+            </Link>
+          </div>
+        ) : (
+          <div style={styles.wrapper}>
+            <div style={styles.left}>
+              <div style={styles.offerBox}>
+                <strong>Available Offers</strong>
+                <p>Free delivery on all orders. Limited time offer.</p>
               </div>
-            ))}
+
+              {cartItems.map((item) => (
+                <div key={item.id} style={styles.card}>
+                  <img src={item.image} alt={item.name} style={styles.image} />
+
+                  <div style={styles.info}>
+                    <div style={styles.topRow}>
+                      <div>
+                        <h3 style={styles.name}>{item.name}</h3>
+                        <p style={styles.category}>{item.category}</p>
+                      </div>
+
+                      <button
+                        style={styles.deleteBtn}
+                        onClick={() => dispatch(removeFromCart(item.id))}
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+
+                    <div style={styles.priceRow}>
+                      <span style={styles.price}>₹{item.price}</span>
+                      <span style={styles.oldPrice}>₹{item.oldPrice}</span>
+                      <span style={styles.discount}>Save ₹{item.oldPrice - item.price}</span>
+                    </div>
+
+                    <div style={styles.bottomRow}>
+                      <div style={styles.qtyBox}>
+                        {/* <button style={styles.qtyBtn}>
+                          <FaMinus />
+                        </button> */}
+
+                        <button
+  style={styles.qtyBtn}
+  onClick={() => dispatch(decreaseQuantity(item.id))}
+>
+  <FaMinus />
+</button>
+
+                        <span style={styles.qtyText}>{item.quantity}</span>
+
+                        <button
+                          style={styles.qtyBtn}
+                          onClick={() => dispatch(addToCart(item))}
+                        >
+                          <FaPlus />
+                        </button>
+                      </div>
+
+                      <p style={styles.delivery}>Delivery in 3-5 days</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={styles.summary}>
+              <h3 style={styles.summaryTitle}>PRICE DETAILS</h3>
+
+              <div style={styles.row}>
+                <span>Total MRP</span>
+                <span>₹{totalMRP}</span>
+              </div>
+
+              <div style={styles.row}>
+                <span>Discount</span>
+                <span style={styles.green}>- ₹{discount}</span>
+              </div>
+
+              <div style={styles.row}>
+                <span>Delivery Fee</span>
+                <span style={styles.green}>FREE</span>
+              </div>
+
+              <hr style={styles.line} />
+
+              <div style={styles.totalRow}>
+                <strong>Total Amount</strong>
+                <strong>₹{finalAmount}</strong>
+              </div>
+
+              <button
+                style={styles.checkoutBtn}
+                onClick={() => navigate("/checkout")}
+              >
+                PLACE ORDER
+              </button>
+            </div>
           </div>
-
-          <div style={styles.summary}>
-            <h3 style={styles.summaryTitle}>PRICE DETAILS</h3>
-
-            <div style={styles.row}>
-              <span>Total MRP</span>
-              <span>₹{totalMRP}</span>
-            </div>
-
-            <div style={styles.row}>
-              <span>Discount on MRP</span>
-              <span style={styles.green}>- ₹{discount}</span>
-            </div>
-
-            <div style={styles.row}>
-              <span>Delivery Fee</span>
-              <span style={styles.green}>FREE</span>
-            </div>
-
-            <hr style={styles.line} />
-
-            <div style={styles.totalRow}>
-              <strong>Total Amount</strong>
-              <strong>₹{finalAmount}</strong>
-            </div>
-
-            <button
-              style={styles.checkoutBtn}
-              onClick={() => navigate("/checkout")}
-            >
-              PLACE ORDER
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -103,149 +140,209 @@ function Card() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "#f5f5f6",
-    padding: "35px 70px",
+    background: "#f4f5f7",
+    padding: "40px 20px",
   },
+
+  container: {
+    maxWidth: "1150px",
+    margin: "0 auto",
+  },
+
   title: {
     textAlign: "center",
     marginBottom: "30px",
     fontSize: "34px",
-    color: "#282c3f",
+    color: "#1f2937",
   },
-  summary: {
-  background: "#fff",
-  padding: "20px",
-  border: "1px solid #eaeaec",
-  borderRadius: "6px",
-  height: "fit-content",
-  position: "sticky",
-  top: "90px",
-},
+
   wrapper: {
     display: "grid",
     gridTemplateColumns: "2fr 1fr",
-    gap: "28px",
-    maxWidth: "1150px",
-    margin: "0 auto",
+    gap: "26px",
   },
+
   left: {
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "18px",
   },
+
   offerBox: {
     background: "#fff",
-    padding: "18px",
-    borderRadius: "6px",
-    border: "1px solid #eaeaec",
-    color: "#282c3f",
+    padding: "18px 20px",
+    borderRadius: "14px",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.06)",
   },
+
   card: {
     display: "flex",
+    gap: "18px",
     background: "#fff",
-    border: "1px solid #eaeaec",
-    borderRadius: "6px",
-    padding: "14px",
-    gap: "16px",
+    padding: "16px",
+    borderRadius: "16px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
   },
+
   image: {
-    width: "120px",
-    height: "150px",
+    width: "135px",
+    height: "170px",
     objectFit: "cover",
-    borderRadius: "4px",
+    borderRadius: "12px",
   },
+
   info: {
     flex: 1,
   },
+
+  topRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    gap: "15px",
+  },
+
   name: {
     margin: "0 0 6px",
-    fontSize: "17px",
-    color: "#282c3f",
+    fontSize: "18px",
+    color: "#111827",
   },
+
   category: {
-    margin: "0 0 12px",
-    color: "#696b79",
+    margin: 0,
+    color: "#6b7280",
   },
+
+  deleteBtn: {
+    width: "38px",
+    height: "38px",
+    borderRadius: "50%",
+    border: "none",
+    background: "#fff0f3",
+    color: "#ff3f6c",
+    cursor: "pointer",
+  },
+
   priceRow: {
     display: "flex",
     alignItems: "center",
     gap: "10px",
-    marginBottom: "12px",
+    margin: "18px 0",
   },
+
   price: {
-    fontWeight: "700",
-    color: "#282c3f",
+    fontSize: "20px",
+    fontWeight: "800",
+    color: "#111827",
   },
+
   oldPrice: {
+    color: "#9ca3af",
     textDecoration: "line-through",
-    color: "#94969f",
   },
+
   discount: {
-    color: "#ff905a",
-    fontWeight: "700",
-    fontSize: "13px",
-  },
-  qty: {
-    fontWeight: "600",
-    color: "#282c3f",
-  },
-  delivery: {
     color: "#03a685",
-    fontWeight: "600",
+    fontWeight: "700",
     fontSize: "14px",
   },
+
+  bottomRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  qtyBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    background: "#f3f4f6",
+    padding: "8px 12px",
+    borderRadius: "30px",
+  },
+
+  qtyBtn: {
+    border: "none",
+    background: "#fff",
+    width: "28px",
+    height: "28px",
+    borderRadius: "50%",
+    cursor: "pointer",
+  },
+
+  qtyText: {
+    fontWeight: "800",
+  },
+
+  delivery: {
+    color: "#03a685",
+    fontWeight: "700",
+    fontSize: "14px",
+  },
+
   summary: {
     background: "#fff",
-    padding: "20px",
-    border: "1px solid #eaeaec",
-    borderRadius: "6px",
+    padding: "22px",
+    borderRadius: "16px",
     height: "fit-content",
+    position: "sticky",
+    top: "90px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
   },
+
   summaryTitle: {
-    fontSize: "13px",
-    color: "#535766",
-    letterSpacing: "0.5px",
+    fontSize: "14px",
+    color: "#6b7280",
+    letterSpacing: "1px",
   },
+
   row: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "14px 0",
-    color: "#282c3f",
-    fontSize: "15px",
+    margin: "15px 0",
+    color: "#374151",
   },
+
   green: {
     color: "#03a685",
+    fontWeight: "700",
   },
+
   line: {
     border: "none",
-    borderTop: "1px solid #eaeaec",
+    borderTop: "1px solid #e5e7eb",
     margin: "18px 0",
   },
+
   totalRow: {
     display: "flex",
     justifyContent: "space-between",
     fontSize: "18px",
-    color: "#282c3f",
+    color: "#111827",
   },
+
   checkoutBtn: {
     width: "100%",
     marginTop: "22px",
-    padding: "14px",
+    padding: "15px",
     background: "#ff3f6c",
     color: "#fff",
     border: "none",
-    borderRadius: "4px",
-    fontWeight: "700",
+    borderRadius: "12px",
+    fontWeight: "800",
     cursor: "pointer",
   },
+
   emptyBox: {
     maxWidth: "500px",
     margin: "80px auto",
     background: "#fff",
-    padding: "45px",
+    padding: "50px",
     textAlign: "center",
-    borderRadius: "8px",
+    borderRadius: "18px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
   },
+
   shopBtn: {
     display: "inline-block",
     marginTop: "18px",
@@ -253,8 +350,8 @@ const styles = {
     background: "#ff3f6c",
     color: "#fff",
     textDecoration: "none",
-    borderRadius: "4px",
-    fontWeight: "700",
+    borderRadius: "10px",
+    fontWeight: "800",
   },
 };
 

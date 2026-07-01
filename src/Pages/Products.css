@@ -15,6 +15,11 @@
   margin: 0;
 }
 
+.products-hero p {
+  font-size: 18px;
+  margin-top: 12px;
+}
+
 .products-wrapper {
   display: flex;
   gap: 30px;
@@ -23,6 +28,7 @@
 
 .products-sidebar {
   width: 260px;
+  flex-shrink: 0;
   background: #fff;
   padding: 25px;
   border-radius: 18px;
@@ -56,6 +62,7 @@
 
 .products-main {
   flex: 1;
+  min-width: 0;
 }
 
 .products-topbar {
@@ -92,6 +99,7 @@
   width: 100%;
   height: 320px;
   object-fit: cover;
+  display: block;
 }
 
 .heart-btn {
@@ -104,6 +112,7 @@
   border: none;
   background: #fff;
   color: #ff3f6c;
+  cursor: pointer;
 }
 
 .new-badge {
@@ -122,14 +131,29 @@
   padding: 18px;
 }
 
+.product-brand {
+  font-weight: 700;
+  color: #222;
+}
+
 .product-link {
   text-decoration: none;
   color: #222;
 }
 
+.product-link h3 {
+  margin: 10px 0 4px;
+}
+
+.product-category {
+  margin: 0;
+  color: #777;
+}
+
 .price-row {
   display: flex;
   gap: 10px;
+  align-items: center;
   margin: 14px 0;
 }
 
@@ -149,47 +173,19 @@
   margin-top: 80px;
 }
 
-@media (max-width: 1200px) {
-  .products-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
 
-@media (max-width: 992px) {
-  .products-wrapper {
-    flex-direction: column;
-    padding: 30px;
-  }
 
+@media (max-width: 768px) {
   .products-sidebar {
-    width: auto;
-  }
+    display: none;
 
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
+.products-grid {
 
-@media (max-width: 576px) {
-  .products-hero h1 {
-    font-size: 34px;
-  }
-
-  .products-wrapper {
-    padding: 20px;
-  }
-
-  .products-topbar {
-    flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
-  }
-
-  .products-grid {
     grid-template-columns: 1fr;
-  }
 
-  .product-img-box img {
-    height: 260px;
+}
+.products-hero {
+    padding: 35px 12px;
   }
 }

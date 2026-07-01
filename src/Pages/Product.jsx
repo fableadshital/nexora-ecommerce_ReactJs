@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { addToWishlist } from "../features/wishlistSlice";
 import { addToCart } from "../features/cartSlice";
+import "./Products.css";
 
 const products = [
   {
@@ -13,8 +14,7 @@ const products = [
     category: "Men",
     price: 799,
     oldPrice: 1199,
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
   },
   {
     id: 2,
@@ -23,8 +23,7 @@ const products = [
     category: "Women",
     price: 1299,
     oldPrice: 1999,
-    image:
-      "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600",
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600",
   },
   {
     id: 3,
@@ -33,8 +32,7 @@ const products = [
     category: "Men",
     price: 1799,
     oldPrice: 2499,
-    image:
-      "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600",
+    image: "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=600",
   },
   {
     id: 4,
@@ -43,8 +41,7 @@ const products = [
     category: "Women",
     price: 2199,
     oldPrice: 2999,
-    image:
-      "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600",
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600",
   },
   {
     id: 5,
@@ -53,8 +50,7 @@ const products = [
     category: "Men",
     price: 1499,
     oldPrice: 2199,
-    image:
-      "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600",
+    image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600",
   },
   {
     id: 6,
@@ -63,8 +59,7 @@ const products = [
     category: "Women",
     price: 999,
     oldPrice: 1599,
-    image:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600",
+    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600",
   },
   {
     id: 7,
@@ -73,18 +68,16 @@ const products = [
     category: "Women",
     price: 1899,
     oldPrice: 2499,
-    image:
-      "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600",
+    image: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600",
   },
   {
     id: 8,
     name: "Winter Streetwear Jacket",
     brand: "URBAN",
-    category: "Men",
+    category: "women",
     price: 2399,
     oldPrice: 3299,
-    image:
-      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
   },
 ];
 
@@ -132,21 +125,21 @@ function Products() {
   };
 
   return (
-    <div style={styles.page}>
-      <section style={styles.hero}>
-        <h1 style={styles.heroTitle}>Shop Collection</h1>
-        <p style={styles.heroText}>
+    <div className="products-page">
+      <section className="products-hero">
+        <h1>Shop Collection</h1>
+        <p>
           {searchText
             ? `Search result for "${searchText}"`
             : "Upgrade your wardrobe with premium fashion styles"}
         </p>
       </section>
 
-      <div style={styles.wrapper}>
-        <aside style={styles.sidebar}>
-          <h3 style={styles.filterTitle}>Filters</h3>
+      <div className="products-wrapper">
+        <aside className="products-sidebar">
+          <h3>Filters</h3>
 
-          <div style={styles.filterGroup}>
+          <div className="filter-group">
             <h4>Category</h4>
 
             <label>
@@ -180,7 +173,7 @@ function Products() {
             </label>
           </div>
 
-          <div style={styles.filterGroup}>
+          <div className="filter-group">
             <h4>Price</h4>
 
             <label>
@@ -214,22 +207,16 @@ function Products() {
             </label>
           </div>
 
-          <button style={styles.clearBtn} onClick={clearFilters}>
+          <button className="clear-btn" onClick={clearFilters}>
             Clear Filter
           </button>
         </aside>
 
-        <main style={styles.main}>
-          <div style={styles.topBar}>
-            {/* <p style={styles.count}>
-              Showing {filteredProducts.length} products
-            </p> */}
+        <main className="products-main">
+          <div className="products-topbar">
+            <p>Showing {filteredProducts.length} products</p>
 
-            <select
-              style={styles.sort}
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="">Sort by</option>
               <option value="low">Price Low to High</option>
               <option value="high">Price High to Low</option>
@@ -238,49 +225,42 @@ function Products() {
           </div>
 
           {filteredProducts.length === 0 ? (
-            <h2 style={styles.noData}>No products found</h2>
+            <h2 className="no-data">No products found</h2>
           ) : (
-            <div style={styles.grid}>
+            <div className="products-grid">
               {filteredProducts.map((item) => (
-                <div key={item.id} style={styles.card}>
-                  <div style={styles.imageBox}>
+                <div key={item.id} className="product-card-box">
+                  <div className="product-img-box">
                     <Link to={`/product/${item.id}`}>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        style={styles.image}
-                      />
+                      <img src={item.image} alt={item.name} />
                     </Link>
 
                     <button
-                      style={styles.heart}
+                      className="heart-btn"
                       onClick={() => dispatch(addToWishlist(item))}
                     >
                       <FaHeart />
                     </button>
 
-                    <span style={styles.badge}>New</span>
+                    <span className="new-badge">New</span>
                   </div>
 
-                  <div style={styles.content}>
-                    <span style={styles.brand}>{item.brand}</span>
+                  <div className="product-content">
+                    <span className="product-brand">{item.brand}</span>
 
-                    <Link
-                      to={`/product/${item.id}`}
-                      style={{ textDecoration: "none", color: "#222" }}
-                    >
-                      <h3 style={styles.name}>{item.name}</h3>
+                    <Link to={`/product/${item.id}`} className="product-link">
+                      <h3>{item.name}</h3>
                     </Link>
 
-                    <p style={styles.category}>{item.category}</p>
+                    <p className="product-category">{item.category}</p>
 
-                    <div style={styles.priceRow}>
-                      <span style={styles.price}>₹{item.price}</span>
-                      <span style={styles.oldPrice}>₹{item.oldPrice}</span>
+                    <div className="price-row">
+                      <span className="price">₹{item.price}</span>
+                      <span className="old-price">₹{item.oldPrice}</span>
                     </div>
 
                     <button
-                      style={styles.button}
+                      className="cart-btn"
                       onClick={() => dispatch(addToCart(item))}
                     >
                       Add to Cart
@@ -295,125 +275,5 @@ function Products() {
     </div>
   );
 }
-
-const styles = {
-  page: { background: "#f6f6f6", minHeight: "100vh" },
-
-  hero: {
-    padding: "70px 20px",
-    textAlign: "center",
-    background: "linear-gradient(120deg, #ff3f6c, #ff8fab)",
-    color: "#fff",
-  },
-  heroTitle: { fontSize: "48px", margin: 0 },
-  heroText: { fontSize: "18px", marginTop: "12px" },
-  wrapper: { display: "flex", gap: "30px", padding: "40px" },
-  sidebar: {
-    width: "260px",
-    background: "#fff",
-    padding: "25px",
-    borderRadius: "18px",
-    height: "fit-content",
-    boxShadow: "0 5px 18px rgba(0,0,0,0.08)",
-  },
-  filterTitle: { marginTop: 0, color: "#222" },
-  filterGroup: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    marginTop: "22px",
-    color: "#444",
-  },
-  clearBtn: {
-    width: "100%",
-    marginTop: "25px",
-    padding: "12px",
-    border: "none",
-    background: "#222",
-    color: "#fff",
-    borderRadius: "8px",
-    cursor: "pointer",
-  },
-  main: { flex: 1 },
-  topBar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "25px",
-  },
-  count: { fontWeight: "600", color: "#333" },
-  sort: {
-    padding: "12px",
-    borderRadius: "8px",
-    border: "1px solid #ddd",
-    outline: "none",
-    cursor: "pointer",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-    gap: "28px",
-  },
-  card: {
-    background: "#fff",
-    borderRadius: "18px",
-    overflow: "hidden",
-    boxShadow: "0 8px 22px rgba(0,0,0,0.08)",
-  },
-  imageBox: { position: "relative" },
-  image: {
-    width: "100%",
-    height: "320px",
-    objectFit: "cover",
-    display: "block",
-  },
-  heart: {
-    position: "absolute",
-    top: "14px",
-    right: "14px",
-    width: "38px",
-    height: "38px",
-    borderRadius: "50%",
-    border: "none",
-    background: "#fff",
-    color: "#ff3f6c",
-    cursor: "pointer",
-  },
-  badge: {
-    position: "absolute",
-    top: "14px",
-    left: "14px",
-    background: "#ff3f6c",
-    color: "#fff",
-    padding: "6px 12px",
-    borderRadius: "20px",
-    fontSize: "12px",
-    fontWeight: "700",
-  },
-  content: { padding: "18px" },
-  brand: { fontWeight: "700", color: "#222" },
-  name: { margin: "10px 0 4px", color: "#222" },
-  category: { margin: 0, color: "#777" },
-  priceRow: {
-    display: "flex",
-    gap: "10px",
-    alignItems: "center",
-    margin: "14px 0",
-  },
-  price: { color: "#ff3f6c", fontSize: "20px", fontWeight: "800" },
-  oldPrice: { color: "#999", textDecoration: "line-through" },
-  button: {
-    width: "100%",
-    padding: "13px",
-    background: "#ff3f6c",
-    color: "#fff",
-    border: "none",
-    borderRadius: "10px",
-    fontWeight: "700",
-    cursor: "pointer",
-  },
-  noData: { textAlign: "center", marginTop: "80px" },
-};
-
 
 export default Products;
